@@ -5,15 +5,38 @@
   top: 0;
   left: 0;
 
+  &.header--fixed {
+    .header-wrapper__box {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
   .header-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 30px;
+    position: relative;
 
     &__logo {
       width: 148px;
       aspect-ratio: 148 / 59;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &__box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 45px;
 
       img {
         width: 100%;

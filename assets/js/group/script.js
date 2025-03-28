@@ -46,7 +46,7 @@ function hero() {
   gsap.to(heroVideo, {
     width: "100px",
     height: "60px",
-    top: "50%",
+    top: "calc(50% - 11px)",
     left: "50%",
     yPercent: 50,
     xPercent: -50,
@@ -57,15 +57,30 @@ function hero() {
       start: "top top",
       end: "+=150%",
       scrub: true,
-      pinSpacing: false,
-      markers: true
+      pinSpacing: false
+      // markers: true
     }
   });
+
+  gsap.fromTo(
+    ".hero-wrapper__bg .bg-item.active",
+    { opacity: 0 },
+    {
+      opacity: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: heroVideo, // Cùng trigger với heroVideo
+        start: "top top",
+        end: "+=150%",
+        scrub: true
+      }
+    }
+  );
 
   // Animation cho header
   gsap.fromTo(
     "#header",
-    { top: "100%", yPercent: -100 },
+    { top: "100%", yPercent: -100, opacity: 1 }, // Ban đầu không mờ
     {
       top: 0,
       yPercent: 0,
@@ -75,9 +90,35 @@ function hero() {
         start: "top top",
         end: "50% top",
         scrub: true,
-        // markers: true,
+        pinSpacing: false,
+        onUpdate: (self) => {
+          let progress = self.progress.toFixed(2);
 
-        pinSpacing: false
+          let opacity;
+          if (progress < 0.1) {
+            opacity = 1; // Ban đầu hiển thị hoàn toàn
+          } else if (progress >= 0.1 && progress <= 0.2) {
+            opacity = 1 - (progress - 0.1) * 10; // Giảm dần từ 1 đến 0
+          } else if (progress > 0.2 && progress < 0.99) {
+            opacity = 0; // Ẩn hoàn toàn từ 0.2 đến 0.8
+          } else {
+            opacity = 1; // Khi vượt 0.9, hiển thị hoàn toàn
+          }
+
+          if (progress >= 0.9) {
+            document.getElementById("header").classList.add("header--fixed");
+          } else {
+            document.getElementById("header").classList.remove("header--fixed");
+          }
+
+          if (progress == 1) {
+            document.querySelector(".hero-switcher").classList.add("active");
+          } else {
+            document.querySelector(".hero-switcher").classList.remove("active");
+          }
+
+          gsap.to("#header", { opacity: opacity });
+        }
       }
     }
   );
@@ -90,8 +131,17 @@ function hero() {
       start: "top top",
       end: "+=150%",
       scrub: true,
-      pinSpacing: false
+      pinSpacing: false,
       // markers: true
+      onUpdate: (self) => {
+        let progress = self.progress.toFixed(2);
+
+        if (progress == 1) {
+          document.querySelector(".hero").classList.add("done-video");
+        } else {
+          document.querySelector(".hero").classList.remove("done-video");
+        }
+      }
     }
   });
 
