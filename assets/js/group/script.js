@@ -77,6 +77,17 @@ function hero() {
     }
   );
 
+  gsap.to(".hero", {
+    backgroundColor: "#B9BABA",
+    ease: "none",
+    scrollTrigger: {
+      trigger: heroVideo, // Cùng trigger với heroVideo
+      start: "top top",
+      end: "+=150%",
+      scrub: true
+    }
+  });
+
   // Animation cho header
   gsap.fromTo(
     "#header",
