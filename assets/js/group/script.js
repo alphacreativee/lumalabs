@@ -25,23 +25,16 @@ function initLenis() {
 
 function hero() {
   const hero = document.querySelector(".hero");
+  const personas = document.querySelector(".hero-personas");
   const heroVideo = document.querySelector(".hero-wrapper__video");
   const header = document.getElementById("header");
-  const heroHeight = hero.offsetHeight; // Chiều cao của hero
-
-  // Đảm bảo video và header bắt đầu từ trạng thái ban đầu trong CSS
-  gsap.set(heroVideo, {
-    clearProps: "width,height,left,top"
-  });
-  gsap.set(header, {
-    clearProps: "top"
-  });
+  const heroHeight = hero.offsetHeight;
 
   gsap.to(".hero", {
     scrollTrigger: {
       trigger: ".hero",
       start: "top top",
-      end: () => `+=300%`,
+      end: "+=300%",
       scrub: 1,
       pin: true,
       pinSpacing: false
@@ -50,46 +43,57 @@ function hero() {
   });
 
   // Animation cho video wrapper
-  gsap.fromTo(
-    heroVideo,
-    {
-      width: "calc(100% - 80px)",
-      height: "calc(100dvh - 140px)",
-      left: "50%",
-      top: "0",
-      xPercent: -50
-    },
-    {
-      width: "60px",
-      height: "90px",
-      top: "50%",
-      xPercent: -50,
-      yPercent: -50,
-      ease: "none",
-      scrollTrigger: {
-        trigger: hero,
-        start: "top top",
-        end: "+=150%",
-        scrub: true
-        // markers: true
-      }
-    }
-  );
-
-  // Animation cho header
-  gsap.from("#header", {
-    top: "0", // Trạng thái cuối tại scroll 150%
+  gsap.to(heroVideo, {
+    width: "100px",
+    height: "60px",
+    top: "50%",
+    left: "50%",
+    yPercent: 50,
+    xPercent: -50,
+    borderRadius: "40px",
     ease: "none",
     scrollTrigger: {
-      trigger: "body",
-      start: "top top", // Rõ ràng bắt đầu tại scroll 0%
-      end: `+=150%`, // Kết thúc tại scroll 150%
+      trigger: heroVideo,
+      start: "top top",
+      end: "+=150%",
       scrub: true,
+      pinSpacing: false,
       markers: true
     }
   });
 
-  console.log(window.innerHeight * 1.5 - header.offsetHeight);
+  // Animation cho header
+  gsap.fromTo(
+    "#header",
+    { top: "100%", yPercent: -100 },
+    {
+      top: 0,
+      yPercent: 0,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "50% top",
+        scrub: true,
+        // markers: true,
+
+        pinSpacing: false
+      }
+    }
+  );
+
+  gsap.to(personas, {
+    scale: 0.52,
+    ease: "none",
+    scrollTrigger: {
+      trigger: heroVideo,
+      start: "top top",
+      end: "+=150%",
+      scrub: true,
+      pinSpacing: false
+      // markers: true
+    }
+  });
 
   // Làm mới ScrollTrigger sau khi thiết lập
   ScrollTrigger.refresh();

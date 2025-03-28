@@ -1,10 +1,9 @@
 #header {
   position: fixed;
-  top: 100%;
-  bottom: unset;
   z-index: 50;
   width: 100%;
-  transform: translateY(-100%);
+  top: 0;
+  left: 0;
 
   .header-wrapper {
     display: flex;
