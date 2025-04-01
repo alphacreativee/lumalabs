@@ -38,7 +38,7 @@ function hero() {
       scrub: 1,
       pin: true,
       pinSpacing: false,
-      // markers: true,
+      markers: true,
     },
   });
 
