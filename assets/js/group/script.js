@@ -388,11 +388,36 @@ function testimonial() {
   // Theo dõi chuyển động chuột
   container.addEventListener("mousemove", handleScroll);
 }
+function animationText() {
+  const fxTitle = [...document.querySelectorAll("[data-splitting]")];
+  fxTitle.forEach((title) => {
+    gsap.fromTo(
+      title.querySelectorAll(".char"),
+      {
+        "will-change": "opacity",
+        opacity: 0,
+      },
+      {
+        ease: "none",
+        opacity: 1,
+        stagger: 0.05,
+        scrollTrigger: {
+          trigger: title,
+          start: "top 70%",
+          end: "top 70%",
+          // scrub: true,
+          markers: true,
+        },
+      }
+    );
+  });
+}
 const init = () => {
   initLenis();
   hero();
   hoverIcon();
   testimonial();
+  animationText();
   // Thêm listener để làm mới khi resize
   window.addEventListener("resize", () => {
     ScrollTrigger.refresh();
