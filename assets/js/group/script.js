@@ -6,7 +6,7 @@ function initLenis() {
   lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smooth: true
+    smooth: true,
   });
 
   function raf(time) {
@@ -38,8 +38,8 @@ function hero() {
       scrub: 1,
       pin: true,
       pinSpacing: false,
-      markers: true
-    }
+      markers: true,
+    },
   });
 
   // Animation cho video wrapper
@@ -57,9 +57,9 @@ function hero() {
       start: "top top",
       end: "+=150%",
       scrub: true,
-      pinSpacing: false
+      pinSpacing: false,
       // markers: true
-    }
+    },
   });
 
   gsap.fromTo(
@@ -72,8 +72,8 @@ function hero() {
         trigger: heroVideo, // Cùng trigger với heroVideo
         start: "top top",
         end: "+=150%",
-        scrub: true
-      }
+        scrub: true,
+      },
     }
   );
 
@@ -84,8 +84,8 @@ function hero() {
       trigger: heroVideo, // Cùng trigger với heroVideo
       start: "top top",
       end: "+=150%",
-      scrub: true
-    }
+      scrub: true,
+    },
   });
 
   // loading
@@ -110,7 +110,7 @@ function hero() {
         gsap.to(".hero-switcher", {
           oacity: 0,
           duration: 0.5,
-          ease: "none"
+          ease: "none",
         });
       }
 
@@ -127,7 +127,7 @@ function hero() {
           document.querySelector(".hero-switcher .list-item").style.opacity = 1;
         }, 0.3);
       }
-    }
+    },
   });
 
   // loading
@@ -152,7 +152,7 @@ function hero() {
         gsap.to(".hero-switcher", {
           oacity: 0,
           duration: 0.5,
-          ease: "none"
+          ease: "none",
         });
       }
 
@@ -169,7 +169,7 @@ function hero() {
           document.querySelector(".hero-switcher .list-item").style.opacity = 1;
         }, 0.3);
       }
-    }
+    },
   });
 
   // Animation cho header
@@ -215,8 +215,8 @@ function hero() {
           }
 
           gsap.to("#header", { opacity: opacity });
-        }
-      }
+        },
+      },
     }
   );
 
@@ -238,8 +238,8 @@ function hero() {
         } else {
           document.querySelector(".hero").classList.remove("done-video");
         }
-      }
-    }
+      },
+    },
   });
 
   // Làm mới ScrollTrigger sau khi thiết lập
@@ -260,7 +260,7 @@ function parallaxIt(e, target, movement) {
     duration: 0.3,
     x: parallaxX,
     y: parallaxY,
-    ease: "power2.out"
+    ease: "power2.out",
   });
 }
 
@@ -301,7 +301,7 @@ function hoverIcon() {
         width: 100,
         x: 0,
         y: 0,
-        ease: "power2.out"
+        ease: "power2.out",
       });
       const img = item.querySelector("img");
       if (img) {
@@ -310,7 +310,7 @@ function hoverIcon() {
           x: 0,
           y: 0,
           scale: 1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -321,7 +321,7 @@ function hoverIcon() {
         gsap.to(img, {
           duration: 0.3,
           scale: 0.9,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -338,7 +338,7 @@ function hoverIcon() {
         duration: 0.3,
         x: 0,
         y: 0,
-        ease: "power2.out"
+        ease: "power2.out",
       });
       const span = button.querySelector("span");
       if (span) {
@@ -347,7 +347,7 @@ function hoverIcon() {
           x: 0,
           y: 0,
           scale: 1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -358,16 +358,53 @@ function hoverIcon() {
         gsap.to(span, {
           duration: 0.3,
           scale: 0.9,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
   });
 }
+function testimonial() {
+  const wrapper = document.querySelector(".testimonial__scroll-wrapper");
+  const container = document.querySelector(".testimonial__container");
+  let scrollAmount = 0;
+  let isHovering = false;
+  function handleScroll(e) {
+    if (!isHovering) return; // Chỉ chạy khi chuột trong section
+
+    const containerWidth = container.offsetWidth;
+    const wrapperWidth = wrapper.scrollWidth;
+    const maxScroll = wrapperWidth - containerWidth;
+
+    // Tính vị trí chuột tương đối trong container
+    const rect = container.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left; // Vị trí X trong container
+    const scrollRatio = mouseX / containerWidth;
+
+    // Tính toán vị trí scroll mới
+    scrollAmount = scrollRatio * maxScroll * -1;
+    wrapper.style.transform = `translateX(${scrollAmount}px)`;
+  }
+
+  // Bật/tắt hiệu ứng khi chuột vào/ra section
+  container.addEventListener("mouseenter", () => {
+    isHovering = true;
+  });
+
+  container.addEventListener("mouseleave", () => {
+    isHovering = false;
+    // Tùy chọn: Reset vị trí khi rời khỏi
+    wrapper.style.transform = `translateX(0px)`;
+  });
+
+  // Theo dõi chuyển động chuột
+  container.addEventListener("mousemove", handleScroll);
+}
 const init = () => {
   initLenis();
   hero();
   hoverIcon();
+  testimonial();
   // Thêm listener để làm mới khi resize
   window.addEventListener("resize", () => {
     ScrollTrigger.refresh();
