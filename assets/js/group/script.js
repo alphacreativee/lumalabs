@@ -396,10 +396,96 @@ function hoverIcon() {
     });
   });
 }
+function testimonial() {
+  const wrapper = document.querySelector(".testimonial__scroll-wrapper");
+  const container = document.querySelector(".testimonial__container");
+  let scrollAmount = 0;
+  let isHovering = false;
+  function handleScroll(e) {
+    if (!isHovering) return; // Chỉ chạy khi chuột trong section
+
+    const containerWidth = container.offsetWidth;
+    const wrapperWidth = wrapper.scrollWidth;
+    const maxScroll = wrapperWidth - containerWidth;
+
+    // Tính vị trí chuột tương đối trong container
+    const rect = container.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left; // Vị trí X trong container
+    const scrollRatio = mouseX / containerWidth;
+
+    // Tính toán vị trí scroll mới
+    scrollAmount = scrollRatio * maxScroll * -1;
+    wrapper.style.transform = `translateX(${scrollAmount}px)`;
+  }
+
+  // Bật/tắt hiệu ứng khi chuột vào/ra section
+  container.addEventListener("mouseenter", () => {
+    isHovering = true;
+  });
+
+  container.addEventListener("mouseleave", () => {
+    isHovering = false;
+    // Tùy chọn: Reset vị trí khi rời khỏi
+    wrapper.style.transform = `translateX(0px)`;
+  });
+
+  // Theo dõi chuyển động chuột
+  container.addEventListener("mousemove", handleScroll);
+}
+function animationText() {
+  const fxTitle = document.querySelectorAll("[data-splitting]");
+  const button = document.querySelector(".btn-large");
+  fxTitle.forEach((title) => {
+    gsap.fromTo(
+      title.querySelectorAll(".char"),
+      {
+        "will-change": "opacity",
+        opacity: 0
+      },
+      {
+        ease: "none",
+        opacity: 1,
+        stagger: 0.05,
+        scrollTrigger: {
+          trigger: title,
+          start: "top 70%",
+          end: "top 70%",
+          // scrub: true,
+          markers: true
+        }
+      }
+    );
+  });
+  // const tl = gsap.timeline({ paused: true });
+  // fxTitle.forEach((title) => {
+  //   tl.fromTo(
+  //     title.querySelectorAll(".char"),
+  //     {
+  //       "will-change": "opacity",
+  //       opacity: 0,
+  //     },
+  //     {
+  //       ease: "none",
+  //       opacity: 1,
+  //       stagger: 0.05,
+  //     }
+  //   );
+  // });
+  // const toggleAnimation = () => {
+  //   if (tl.paused()) {
+  //     tl.play(); // Nếu đang tạm dừng, chạy animation
+  //   } else {
+  //     tl.reverse(); // Nếu đang chạy, tạm dừng animation
+  //   }
+  // };
+  // button.addEventListener("click", toggleAnimation);
+}
 const init = () => {
   initLenis();
   hero();
   hoverIcon();
+  testimonial();
+  animationText();
   // Thêm listener để làm mới khi resize
   window.addEventListener("resize", () => {
     ScrollTrigger.refresh();
