@@ -7,6 +7,13 @@ section.hero {
   height: 300vh;
 
   .hero {
+    transition: opacity 0.4s ease;
+    opacity: 1;
+
+    &.loading {
+      opacity: 0;
+    }
+
     &-wrapper {
       position: relative;
       //   overflow: hidden;
@@ -133,9 +140,17 @@ section.hero {
       left: 50%;
       transform: translate(-50%, -50%);
       width: max-content;
-      transition: 0.3s ease;
+      height: max-content;
+      // transition: 0.3s ease;
       opacity: 0;
       visibility: hidden;
+
+      .item-ovl {
+        position: absolute;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease;
+      }
 
       &.active {
         opacity: 1;
@@ -152,6 +167,35 @@ section.hero {
         opacity: 1;
         visibility: visible;
         z-index: 21;
+
+        width: 100vw;
+        height: 100vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-black);
+
+        .list-item {
+          .item {
+            background-color: var(--main-color);
+            border-color: var(--main-color);
+          }
+        }
+
+        .item-ovl {
+          width: 100px;
+          height: 60px;
+          position: absolute;
+          z-index: 0;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: var(--main-color);
+          border-radius: 40px;
+          opacity: 1;
+          visibility: visible;
+        }
       }
 
       .list-item {
@@ -159,6 +203,7 @@ section.hero {
         align-items: center;
         justify-content: center;
         gap: 20px;
+        transition: none;
 
         .item {
           width: 100px;
@@ -180,6 +225,24 @@ section.hero {
             z-index: 1;
           }
         }
+      }
+    }
+
+    &-gradient {
+      width: 100vmin;
+      height: 50vmin;
+      filter: blur(30vw);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 1s;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      background-color: rgba(39 96 218);
+      transform: translate(-50%, 0);
+
+      &.active {
+        opacity: 0.6;
       }
     }
 

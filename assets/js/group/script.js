@@ -46,7 +46,7 @@ function hero() {
   gsap.to(heroVideo, {
     width: "80px",
     height: "40px",
-    top: "calc(50% + 10px)",
+    top: "calc(50% + 5px)",
     left: "50%",
     yPercent: 50,
     xPercent: -50,
@@ -88,6 +88,48 @@ function hero() {
     }
   });
 
+  // loading
+  gsap.to(".item-ovl", {
+    width: "calc(100vw - 40px)",
+    height: "calc(100vh - 140px)",
+    duration: 0.8,
+    delay: 1,
+    zIndex: 2,
+    top: "20px",
+    yPercent: 0,
+    ease: "none",
+    onUpdate: function () {
+      // Tính toán tiến trình từ thời gian
+      const progress = this.progress();
+      console.log(progress);
+      if (progress >= 0.01) {
+        document.querySelector(".hero-switcher .list-item").style.opacity = 0;
+      }
+
+      if (progress >= 0.3) {
+        gsap.to(".hero-switcher", {
+          oacity: 0,
+          duration: 0.5,
+          ease: "none"
+        });
+      }
+
+      if (progress >= 0.8) {
+        // Khi tiến trình đạt 80%, thực hiện hành động
+        document.querySelector("#header").classList.remove("loading");
+      }
+
+      if (progress == 1) {
+        document.querySelector(".hero-switcher").classList.remove("loading");
+        document.querySelector(".hero").classList.remove("loading");
+
+        setTimeout(() => {
+          document.querySelector(".hero-switcher .list-item").style.opacity = 1;
+        }, 0.3);
+      }
+    }
+  });
+
   // Animation cho header
   gsap.fromTo(
     "#header",
@@ -124,8 +166,10 @@ function hero() {
 
           if (progress == 1) {
             document.querySelector(".hero-switcher").classList.add("active");
+            document.querySelector(".hero-gradient").classList.add("active");
           } else {
             document.querySelector(".hero-switcher").classList.remove("active");
+            document.querySelector(".hero-gradient").classList.remove("active");
           }
 
           gsap.to("#header", { opacity: opacity });
@@ -234,13 +278,13 @@ function hoverIcon() {
     TweenMax.to(this, 0.3, {
       x: 0,
       y: 0,
-      ease: Power2.easeOut,
+      ease: Power2.easeOut
     });
     TweenMax.to($(this).find("span"), 0.3, {
       x: 0,
       y: 0,
       scale: 1, // Reset scale về 1 khi rời chuột
-      ease: Power2.easeOut,
+      ease: Power2.easeOut
     });
   });
 
@@ -248,7 +292,7 @@ function hoverIcon() {
   $(".btn-large").mouseenter(function (e) {
     TweenMax.to($(this).find("span"), 0.3, {
       scale: 0.9, // Scale nhỏ lại khi hover
-      ease: Power2.easeOut,
+      ease: Power2.easeOut
     });
   });
 }

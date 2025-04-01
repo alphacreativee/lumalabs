@@ -5,6 +5,10 @@
   top: 0;
   left: 0;
 
+  &.loading {
+    z-index: 0;
+  }
+
   &.header--fixed {
     .header-wrapper__box {
       opacity: 0;
