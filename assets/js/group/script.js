@@ -162,10 +162,10 @@ function hero() {
 function parallaxIt(e, target, movement) {
   var $this = $(target);
 
-  var relX = e.pageX - $this.offset().left; // Tính vị trí tương đối X
-  var relY = e.pageY - $this.offset().top; // Tính vị trí tương đối Y
+  var relX = e.pageX - $this.offset().left;
+  var relY = e.pageY - $this.offset().top;
 
-  var parallaxX = (relX / $this.width() - 0.5) * movement; // -0.5 để căn giữa
+  var parallaxX = (relX / $this.width() - 0.5) * movement;
   var parallaxY = (relY / $this.height() - 0.5) * movement;
 
   TweenMax.to($this, 0.3, {
@@ -176,18 +176,36 @@ function parallaxIt(e, target, movement) {
 }
 
 function callParallax(e) {
-  var $item = $(e.currentTarget); // Lấy item
-  var $img = $item.find("img"); // Lấy img trong item
+  var $item = $(e.currentTarget); // Phần tử đang hover
+  var $img = $item.find("img"); // Img trong phần tử (nếu có)
+  var $span = $item.find("span"); // Span trong phần tử (nếu có)
 
-  parallaxIt(e, $img, 20); // Img di chuyển mạnh hơn
-  parallaxIt(e, $item, 5); // I
+  // Áp dụng parallax cho item/button
+  parallaxIt(e, $item, 10); // Item hoặc button di chuyển nhẹ
+
+  // Nếu có img thì áp dụng parallax
+  if ($img.length) {
+    parallaxIt(e, $img, 20); // Img di chuyển mạnh hơn
+  }
+
+  // Nếu có span thì áp dụng parallax
+  if ($span.length) {
+    parallaxIt(e, $span, 15); // Span di chuyển mức trung
+  }
 }
 
 function hoverIcon() {
+  // Cho .list-item .item
   $(".list-item .item").mousemove(function (e) {
     callParallax(e);
   });
 
+  // Cho .btn-large
+  $(".btn-large").mousemove(function (e) {
+    callParallax(e);
+  });
+
+  // Mouseleave cho .list-item .item
   $(".list-item .item").mouseleave(function (e) {
     TweenMax.to(this, 0.3, {
       height: 60,
@@ -204,9 +222,33 @@ function hoverIcon() {
     });
   });
 
+  // Mouseenter cho .list-item .item
   $(".list-item .item").mouseenter(function (e) {
     TweenMax.to($(this).find("img"), 0.3, {
       scale: 0.9
+    });
+  });
+
+  // Mouseleave cho .btn-large
+  $(".btn-large").mouseleave(function (e) {
+    TweenMax.to(this, 0.3, {
+      x: 0,
+      y: 0,
+      ease: Power2.easeOut,
+    });
+    TweenMax.to($(this).find("span"), 0.3, {
+      x: 0,
+      y: 0,
+      scale: 1, // Reset scale về 1 khi rời chuột
+      ease: Power2.easeOut,
+    });
+  });
+
+  // Mouseenter cho .btn-large
+  $(".btn-large").mouseenter(function (e) {
+    TweenMax.to($(this).find("span"), 0.3, {
+      scale: 0.9, // Scale nhỏ lại khi hover
+      ease: Power2.easeOut,
     });
   });
 }
