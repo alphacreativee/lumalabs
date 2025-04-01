@@ -101,14 +101,13 @@ function hero() {
     onUpdate: function () {
       // Tính toán tiến trình từ thời gian
       const progress = this.progress();
-      console.log(progress);
       if (progress >= 0.01) {
         document.querySelector(".hero-switcher .list-item").style.opacity = 0;
       }
 
-      if (progress >= 0.3) {
-        gsap.to(".hero-switcher", {
-          oacity: 0,
+      if (progress >= 0.8) {
+        gsap.to(".hero-switcher .item-ovl", {
+          opacity: 0,
           duration: 0.5,
           ease: "none"
         });
@@ -117,15 +116,13 @@ function hero() {
       if (progress >= 0.8) {
         // Khi tiến trình đạt 80%, thực hiện hành động
         document.querySelector("#header").classList.remove("loading");
+
+        document.querySelector(".hero-switcher .list-item").style.opacity = 1;
       }
 
       if (progress == 1) {
         document.querySelector(".hero-switcher").classList.remove("loading");
         document.querySelector(".hero").classList.remove("loading");
-
-        setTimeout(() => {
-          document.querySelector(".hero-switcher .list-item").style.opacity = 1;
-        }, 0.3);
       }
     }
   });
@@ -143,17 +140,8 @@ function hero() {
     onUpdate: function () {
       // Tính toán tiến trình từ thời gian
       const progress = this.progress();
-      console.log(progress);
       if (progress >= 0.01) {
         document.querySelector(".hero-switcher .list-item").style.opacity = 0;
-      }
-
-      if (progress >= 0.3) {
-        gsap.to(".hero-switcher", {
-          oacity: 0,
-          duration: 0.5,
-          ease: "none"
-        });
       }
 
       if (progress >= 0.8) {
