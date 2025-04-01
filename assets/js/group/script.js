@@ -6,7 +6,7 @@ function initLenis() {
   lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smooth: true
+    smooth: true,
   });
 
   function raf(time) {
@@ -37,9 +37,9 @@ function hero() {
       end: "+=300%",
       scrub: 1,
       pin: true,
-      pinSpacing: false
+      pinSpacing: false,
       // markers: true,
-    }
+    },
   });
 
   // Animation cho video wrapper
@@ -57,9 +57,9 @@ function hero() {
       start: "top top",
       end: "+=150%",
       scrub: true,
-      pinSpacing: false
+      pinSpacing: false,
       // markers: true
-    }
+    },
   });
 
   gsap.fromTo(
@@ -72,8 +72,8 @@ function hero() {
         trigger: heroVideo, // Cùng trigger với heroVideo
         start: "top top",
         end: "+=150%",
-        scrub: true
-      }
+        scrub: true,
+      },
     }
   );
 
@@ -84,8 +84,8 @@ function hero() {
       trigger: heroVideo, // Cùng trigger với heroVideo
       start: "top top",
       end: "+=150%",
-      scrub: true
-    }
+      scrub: true,
+    },
   });
 
   // Animation cho header
@@ -129,8 +129,8 @@ function hero() {
           }
 
           gsap.to("#header", { opacity: opacity });
-        }
-      }
+        },
+      },
     }
   );
 
@@ -152,103 +152,129 @@ function hero() {
         } else {
           document.querySelector(".hero").classList.remove("done-video");
         }
-      }
-    }
+      },
+    },
   });
 
   // Làm mới ScrollTrigger sau khi thiết lập
   ScrollTrigger.refresh();
 }
 function parallaxIt(e, target, movement) {
-  var $this = $(target);
+  const rect = target.getBoundingClientRect();
 
-  var relX = e.pageX - $this.offset().left;
-  var relY = e.pageY - $this.offset().top;
+  // Tính vị trí tương đối của chuột so với target
+  const relX = e.clientX - rect.left;
+  const relY = e.clientY - rect.top;
 
-  var parallaxX = (relX / $this.width() - 0.5) * movement;
-  var parallaxY = (relY / $this.height() - 0.5) * movement;
+  const parallaxX = (relX / rect.width - 0.5) * movement;
+  const parallaxY = (relY / rect.height - 0.5) * movement;
 
-  TweenMax.to($this, 0.3, {
+  // Sử dụng GSAP thay vì TweenMax
+  gsap.to(target, {
+    duration: 0.3,
     x: parallaxX,
     y: parallaxY,
-    ease: Power2.easeOut
+    ease: "power2.out",
   });
 }
 
 function callParallax(e) {
-  var $item = $(e.currentTarget); // Phần tử đang hover
-  var $img = $item.find("img"); // Img trong phần tử (nếu có)
-  var $span = $item.find("span"); // Span trong phần tử (nếu có)
+  const item = e.currentTarget; // Phần tử đang hover
+  const img = item.querySelector("img"); // Img trong phần tử (nếu có)
+  const span = item.querySelector("span"); // Span trong phần tử (nếu có)
 
-  // Áp dụng parallax cho item/button
-  parallaxIt(e, $item, 10); // Item hoặc button di chuyển nhẹ
+  // Áp dụng parallax cho item
+  parallaxIt(e, item, 10); // Item di chuyển nhẹ
 
   // Nếu có img thì áp dụng parallax
-  if ($img.length) {
-    parallaxIt(e, $img, 20); // Img di chuyển mạnh hơn
+  if (img) {
+    parallaxIt(e, img, 20); // Img di chuyển mạnh hơn
   }
 
   // Nếu có span thì áp dụng parallax
-  if ($span.length) {
-    parallaxIt(e, $span, 15); // Span di chuyển mức trung
+  if (span) {
+    parallaxIt(e, span, 15); // Span di chuyển mức trung
   }
 }
 
 function hoverIcon() {
-  // Cho .list-item .item
-  $(".list-item .item").mousemove(function (e) {
-    callParallax(e);
-  });
+  // Lấy tất cả .list-item .item
+  const items = document.querySelectorAll(".list-item .item");
+  const buttons = document.querySelectorAll(".btn-large");
 
-  // Cho .btn-large
-  $(".btn-large").mousemove(function (e) {
-    callParallax(e);
-  });
+  // Xử lý cho .list-item .item
+  items.forEach((item) => {
+    item.addEventListener("mousemove", (e) => {
+      callParallax(e);
+    });
 
-  // Mouseleave cho .list-item .item
-  $(".list-item .item").mouseleave(function (e) {
-    TweenMax.to(this, 0.3, {
-      height: 60,
-      width: 100,
-      x: 0,
-      y: 0,
-      ease: Power2.easeOut
+    item.addEventListener("mouseleave", () => {
+      gsap.to(item, {
+        duration: 0.3,
+        height: 60,
+        width: 100,
+        x: 0,
+        y: 0,
+        ease: "power2.out",
+      });
+      const img = item.querySelector("img");
+      if (img) {
+        gsap.to(img, {
+          duration: 0.3,
+          x: 0,
+          y: 0,
+          scale: 1,
+          ease: "power2.out",
+        });
+      }
     });
-    TweenMax.to($(this).find("img"), 0.3, {
-      x: 0,
-      y: 0,
-      scale: 1,
-      ease: Power2.easeOut
-    });
-  });
 
-  // Mouseenter cho .list-item .item
-  $(".list-item .item").mouseenter(function (e) {
-    TweenMax.to($(this).find("img"), 0.3, {
-      scale: 0.9
-    });
-  });
-
-  // Mouseleave cho .btn-large
-  $(".btn-large").mouseleave(function (e) {
-    TweenMax.to(this, 0.3, {
-      x: 0,
-      y: 0,
-      ease: Power2.easeOut,
-    });
-    TweenMax.to($(this).find("span"), 0.3, {
-      x: 0,
-      y: 0,
-      scale: 1, // Reset scale về 1 khi rời chuột
-      ease: Power2.easeOut,
+    item.addEventListener("mouseenter", () => {
+      const img = item.querySelector("img");
+      if (img) {
+        gsap.to(img, {
+          duration: 0.3,
+          scale: 0.9,
+          ease: "power2.out",
+        });
+      }
     });
   });
 
-  // Mouseenter cho .btn-large
-  $(".btn-large").mouseenter(function (e) {
-    TweenMax.to($(this).find("span"), 0.3, {
-      scale: 0.9, // Scale nhỏ lại khi hover
-      ease: Power2.easeOut,
+  // Xử lý cho .btn-large
+  buttons.forEach((button) => {
+    button.addEventListener("mousemove", (e) => {
+      callParallax(e);
+    });
+
+    button.addEventListener("mouseleave", () => {
+      gsap.to(button, {
+        duration: 0.3,
+        x: 0,
+        y: 0,
+        ease: "power2.out",
+      });
+      const span = button.querySelector("span");
+      if (span) {
+        gsap.to(span, {
+          duration: 0.3,
+          x: 0,
+          y: 0,
+          scale: 1,
+          ease: "power2.out",
+        });
+      }
+    });
+
+    button.addEventListener("mouseenter", () => {
+      const span = button.querySelector("span");
+      if (span) {
+        gsap.to(span, {
+          duration: 0.3,
+          scale: 0.9,
+          ease: "power2.out",
+        });
+      }
     });
   });
 }
