@@ -57,8 +57,11 @@ function hero() {
       start: "top top",
       end: "+=150%",
       scrub: true,
-      pinSpacing: false
-      // markers: true
+      pinSpacing: false,
+      onUpdate: (self) => {
+        let progress = self.progress.toFixed(2);
+        gsap.to(heroVideo, { opacity: progress == 1 ? 0 : 1, duration: 0.3 });
+      }
     }
   });
 
@@ -161,9 +164,12 @@ function hero() {
   });
 
   // Animation cho header
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Animation cho #header khi cuộn
   gsap.fromTo(
     "#header",
-    { top: "100%", yPercent: -100, opacity: 1 }, // Ban đầu không mờ
+    { top: "100%", yPercent: -100, opacity: 1 },
     {
       top: 0,
       yPercent: 0,
@@ -176,37 +182,76 @@ function hero() {
         pinSpacing: false,
         onUpdate: (self) => {
           let progress = self.progress.toFixed(2);
+          let header = document.getElementById("header");
 
-          let opacity;
-          if (progress < 0.1) {
-            opacity = 1; // Ban đầu hiển thị hoàn toàn
-          } else if (progress >= 0.1 && progress <= 0.2) {
-            opacity = 1 - (progress - 0.1) * 10; // Giảm dần từ 1 đến 0
-          } else if (progress > 0.2 && progress < 0.99) {
-            opacity = 0; // Ẩn hoàn toàn từ 0.2 đến 0.8
-          } else {
-            opacity = 1; // Khi vượt 0.9, hiển thị hoàn toàn
-          }
+          // Xử lý opacity theo progress
+          let opacity =
+            progress < 0.1
+              ? 1
+              : progress <= 0.2
+              ? 1 - (progress - 0.1) * 10
+              : progress < 0.99
+              ? 0
+              : 1;
 
-          if (progress >= 0.9) {
-            document.getElementById("header").classList.add("header--fixed");
-          } else {
-            document.getElementById("header").classList.remove("header--fixed");
-          }
+          gsap.to(header, { opacity: opacity });
 
-          if (progress == 1) {
-            document.querySelector(".hero-switcher").classList.add("active");
-            document.querySelector(".hero-gradient").classList.add("active");
-          } else {
-            document.querySelector(".hero-switcher").classList.remove("active");
-            document.querySelector(".hero-gradient").classList.remove("active");
-          }
-
-          gsap.to("#header", { opacity: opacity });
+          // Thêm/Xóa class dựa trên progress
+          header.classList.toggle("header--fixed", progress >= 0.9);
+          document
+            .querySelector(".hero-switcher")
+            .classList.toggle("active", progress == 1);
+          document
+            .querySelector(".hero-gradient")
+            .classList.toggle("active", progress == 1);
         }
       }
     }
   );
+
+  // Timeline cho hiệu ứng mở rộng item-ovl
+  let tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".item-ovl",
+      start: "top center",
+      toggleActions: "play none none none",
+      onUpdate: (self) => {
+        if (self.progress >= 0.8) {
+          document.querySelector("#header").classList.remove("loading");
+          document.querySelector(".hero-switcher").classList.remove("loading");
+        }
+      }
+    }
+  });
+
+  tl.to(".item-ovl", {
+    width: "calc(100vw - 40px)",
+    height: "calc(100vh - 140px)",
+    duration: 0.8,
+    delay: 1,
+    top: "20px",
+    yPercent: 0,
+    ease: "none"
+  }).to(
+    ".item-ovl",
+    {
+      opacity: 0,
+      duration: 0.3,
+      ease: "none"
+    },
+    "-=0.24"
+  );
+
+  const itemSwitcher = document.querySelectorAll(".hero-switcher .item");
+  itemSwitcher.forEach((item) => {
+    item.addEventListener("click", function () {
+      if (this.classList.contains("active")) return;
+
+      itemSwitcher.forEach((i) => i.classList.remove("active"));
+
+      this.classList.add("active");
+    });
+  });
 
   gsap.to(personas, {
     scale: 0.52,
@@ -230,7 +275,6 @@ function hero() {
     }
   });
 
-  // Làm mới ScrollTrigger sau khi thiết lập
   ScrollTrigger.refresh();
 }
 function parallaxIt(e, target, movement) {
@@ -273,7 +317,7 @@ function callParallax(e) {
 
 function hoverIcon() {
   // Lấy tất cả .list-item .item
-  const items = document.querySelectorAll(".list-item .item");
+  const items = document.querySelectorAll(".hero-switcher .list-item .item");
   const buttons = document.querySelectorAll(".btn-large");
 
   // Xử lý cho .list-item .item

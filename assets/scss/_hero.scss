@@ -136,6 +136,7 @@ section.hero {
 
     &-switcher {
       position: fixed;
+      z-index: 2;
       top: 50dvh;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -159,6 +160,21 @@ section.hero {
         .list-item {
           .item.active {
             background-color: var(--main-color);
+            width: 400px !important;
+            transition: transform 0.4s ease;
+            transition: width 0.5s ease;
+            pointer-events: none;
+
+            p {
+              width: max-content;
+              opacity: 0;
+              font-size: 24px;
+            }
+
+            img {
+              left: 10px;
+              top: 10px;
+            }
           }
         }
       }
@@ -209,7 +225,7 @@ section.hero {
           width: 100px;
           height: 60px;
           border-radius: 40px;
-          overflow: hidden;
+          // overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -217,11 +233,20 @@ section.hero {
           cursor: pointer;
           position: relative;
 
+          p {
+            color: var(--color-white);
+            width: 0;
+            opacity: 0;
+          }
+
           img {
             width: 59px;
             height: 59px;
             object-fit: contain;
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 1;
           }
         }
