@@ -6,7 +6,7 @@ function initLenis() {
   lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smooth: true,
+    smooth: true
   });
 
   function raf(time) {
@@ -37,16 +37,16 @@ function hero() {
       end: "+=300%",
       scrub: 1,
       pin: true,
-      pinSpacing: false,
+      pinSpacing: false
       // markers: true,
-    },
+    }
   });
 
   // Animation cho video wrapper
   gsap.to(heroVideo, {
-    width: "100px",
-    height: "60px",
-    top: "calc(50% - 11px)",
+    width: "80px",
+    height: "40px",
+    top: "calc(50% + 10px)",
     left: "50%",
     yPercent: 50,
     xPercent: -50,
@@ -57,9 +57,9 @@ function hero() {
       start: "top top",
       end: "+=150%",
       scrub: true,
-      pinSpacing: false,
+      pinSpacing: false
       // markers: true
-    },
+    }
   });
 
   gsap.fromTo(
@@ -72,8 +72,8 @@ function hero() {
         trigger: heroVideo, // Cùng trigger với heroVideo
         start: "top top",
         end: "+=150%",
-        scrub: true,
-      },
+        scrub: true
+      }
     }
   );
 
@@ -84,8 +84,8 @@ function hero() {
       trigger: heroVideo, // Cùng trigger với heroVideo
       start: "top top",
       end: "+=150%",
-      scrub: true,
-    },
+      scrub: true
+    }
   });
 
   // Animation cho header
@@ -129,8 +129,8 @@ function hero() {
           }
 
           gsap.to("#header", { opacity: opacity });
-        },
-      },
+        }
+      }
     }
   );
 
@@ -152,8 +152,8 @@ function hero() {
         } else {
           document.querySelector(".hero").classList.remove("done-video");
         }
-      },
-    },
+      }
+    }
   });
 
   // Làm mới ScrollTrigger sau khi thiết lập
@@ -171,7 +171,7 @@ function parallaxIt(e, target, movement) {
   TweenMax.to($this, 0.3, {
     x: parallaxX,
     y: parallaxY,
-    ease: Power2.easeOut,
+    ease: Power2.easeOut
   });
 }
 
@@ -194,19 +194,19 @@ function hoverIcon() {
       width: 100,
       x: 0,
       y: 0,
-      ease: Power2.easeOut,
+      ease: Power2.easeOut
     });
     TweenMax.to($(this).find("img"), 0.3, {
       x: 0,
       y: 0,
       scale: 1,
-      ease: Power2.easeOut,
+      ease: Power2.easeOut
     });
   });
 
   $(".list-item .item").mouseenter(function (e) {
     TweenMax.to($(this).find("img"), 0.3, {
-      scale: 0.9,
+      scale: 0.9
     });
   });
 }
