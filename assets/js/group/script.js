@@ -389,7 +389,8 @@ function testimonial() {
   container.addEventListener("mousemove", handleScroll);
 }
 function animationText() {
-  const fxTitle = [...document.querySelectorAll("[data-splitting]")];
+  const fxTitle = document.querySelectorAll("[data-splitting]");
+  const button = document.querySelector(".btn-large");
   fxTitle.forEach((title) => {
     gsap.fromTo(
       title.querySelectorAll(".char"),
@@ -411,6 +412,29 @@ function animationText() {
       }
     );
   });
+  // const tl = gsap.timeline({ paused: true });
+  // fxTitle.forEach((title) => {
+  //   tl.fromTo(
+  //     title.querySelectorAll(".char"),
+  //     {
+  //       "will-change": "opacity",
+  //       opacity: 0,
+  //     },
+  //     {
+  //       ease: "none",
+  //       opacity: 1,
+  //       stagger: 0.05,
+  //     }
+  //   );
+  // });
+  // const toggleAnimation = () => {
+  //   if (tl.paused()) {
+  //     tl.play(); // Nếu đang tạm dừng, chạy animation
+  //   } else {
+  //     tl.reverse(); // Nếu đang chạy, tạm dừng animation
+  //   }
+  // };
+  // button.addEventListener("click", toggleAnimation);
 }
 const init = () => {
   initLenis();
