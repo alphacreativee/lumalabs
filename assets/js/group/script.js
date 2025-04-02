@@ -302,7 +302,7 @@ function hero() {
       if (this.listeners[event]) {
         this.listeners[event].forEach((fn) => fn());
       }
-    }
+    },
   };
 
   let loadedImages = [];
@@ -328,7 +328,7 @@ function hero() {
       Array.from(
         { length: 24 },
         (_, i) => `./assets/morphing/5-1/5-1${String(i).padStart(2, "0")}.png`
-      )
+      ),
     ];
 
     const images = imageGroups.flat();
@@ -582,28 +582,26 @@ function testimonial() {
 
   // Di chuyển customCursor và áp dụng parallax cho span
   function moveCursor(e) {
-    const cursorWidth = customCursor.offsetWidth;
-    const cursorHeight = customCursor.offsetHeight;
+    const cursorRect = customCursor.getBoundingClientRect();
+    const cursorWidth = cursorRect.width;
+    const cursorHeight = cursorRect.height;
     const mouseX = e.clientX;
     const mouseY = e.clientY;
 
-    // Căn giữa customCursor vào chuột
     customCursor.style.transform = `translate(${mouseX - cursorWidth / 2}px, ${
       mouseY - cursorHeight / 2
     }px)`;
 
-    // Tính parallax cho span
+    // Phần parallax giữ nguyên
     const containerRect = container.getBoundingClientRect();
     const relativeX = mouseX - containerRect.left;
     const relativeY = mouseY - containerRect.top;
     const centerX = container.offsetWidth / 2;
     const centerY = container.offsetHeight / 2;
 
-    // Hiệu ứng parallax nhẹ nhàng
     const parallaxX = (relativeX - centerX) * 0.025;
     const parallaxY = (relativeY - centerY) * 0.05;
 
-    // Áp dụng transform cho span (hiệu ứng parallax)
     cursorText.style.transform = `translate(${parallaxX}px, ${parallaxY}px)`;
   }
 
