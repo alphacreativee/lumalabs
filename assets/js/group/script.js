@@ -254,13 +254,31 @@ function hero() {
   );
 
   const itemSwitcher = document.querySelectorAll(".hero-switcher .item");
+  function updateActiveItem(clickedItem) {
+    // Nếu item đã active thì không làm gì
+    if (clickedItem.classList.contains("active")) return;
+
+    // Xóa class active từ tất cả items
+    itemSwitcher.forEach((item) => item.classList.remove("active"));
+
+    // Thêm class active cho item được click
+    clickedItem.classList.add("active");
+
+    // Lấy data-media-persona và tạo biến CSS
+    const data = clickedItem.getAttribute("data-media-persona");
+    const itemColor = `--${data}-color`;
+
+    // Cập nhật backgroundColor cho .hero-gradient
+    const heroGradient = document.querySelector(".hero-gradient");
+    if (heroGradient) {
+      heroGradient.style.backgroundColor = `var(${itemColor})`;
+    }
+  }
+
+  // Thêm event listener cho từng item
   itemSwitcher.forEach((item) => {
     item.addEventListener("click", function () {
-      if (this.classList.contains("active")) return;
-
-      itemSwitcher.forEach((i) => i.classList.remove("active"));
-
-      this.classList.add("active");
+      updateActiveItem(this);
     });
   });
 
