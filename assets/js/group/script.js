@@ -35,7 +35,7 @@ function hero() {
     scrollTrigger: {
       trigger: ".hero",
       start: "top top",
-      end: "+=250%",
+      end: "+=200%",
       scrub: 1,
       pin: true,
       pinSpacing: false,
