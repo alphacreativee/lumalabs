@@ -280,8 +280,149 @@ function hero() {
       }
     }
   });
-
   ScrollTrigger.refresh();
+
+  // canvas personas
+  // Tạo EventEmitter cơ bản nếu không dùng thư viện events
+  const imagesSequenceEmitter = {
+    listeners: {},
+    on(event, fn) {
+      if (!this.listeners[event]) {
+        this.listeners[event] = [];
+      }
+      this.listeners[event].push(fn);
+    },
+    emit(event) {
+      if (this.listeners[event]) {
+        this.listeners[event].forEach((fn) => fn());
+      }
+    }
+  };
+
+  let loadedImages = [];
+
+  function loadSequenceImages() {
+    const imageGroups = [
+      Array.from(
+        { length: 24 },
+        (_, i) => `./assets/morphing/1-2/1-2${String(i).padStart(2, "0")}.png`
+      ),
+      Array.from(
+        { length: 24 },
+        (_, i) => `./assets/morphing/2-3/2-3${String(i).padStart(2, "0")}.png`
+      ),
+      Array.from(
+        { length: 24 },
+        (_, i) => `./assets/morphing/3-4/3-4${String(i).padStart(2, "0")}.png`
+      ),
+      Array.from(
+        { length: 24 },
+        (_, i) => `./assets/morphing/4-5/4-5${String(i).padStart(2, "0")}.png`
+      ),
+      Array.from(
+        { length: 24 },
+        (_, i) => `./assets/morphing/5-1/5-1${String(i).padStart(2, "0")}.png`
+      )
+    ];
+
+    const images = imageGroups.flat();
+
+    const imagePromises = images.map((src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+      });
+    });
+
+    Promise.all(imagePromises).then((imagesLoaded) => {
+      loadedImages = imagesLoaded;
+      imagesSequenceEmitter.emit("sequence-loaded");
+    });
+  }
+
+  const canvas = document.querySelector(".hero-personas canvas");
+  canvas.width = 800;
+  canvas.height = 800;
+  const ctx = canvas.getContext("2d");
+
+  let currentIndex = -1;
+  let progress = 1;
+
+  function normalize(value, min, max) {
+    return Math.max(0, Math.min(1, (value - min) / (max - min)));
+  }
+
+  function render() {
+    const index = Math.round(
+      normalize(progress, 1, 5) * (loadedImages.length - 1)
+    );
+
+    if (index !== currentIndex && ctx) {
+      currentIndex = index;
+
+      // Xóa canvas trước khi vẽ ảnh mới
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Kiểm tra đối tượng ảnh trước khi vẽ lên canvas
+      const img = loadedImages[index];
+      if (img instanceof HTMLImageElement) {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      } else {
+        console.error("Loaded image is not an HTMLImageElement", img);
+      }
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  imagesSequenceEmitter.on("sequence-loaded", function () {
+    document.body.classList.remove("loading");
+    requestAnimationFrame(render);
+  });
+
+  loadSequenceImages();
+
+  let animation = null;
+  let startTime = null;
+  let startValue = 1;
+  let targetValue = 1;
+
+  function animate(timestamp) {
+    if (!startTime) startTime = timestamp;
+
+    const elapsed = timestamp - startTime;
+    const duration = 1000;
+
+    if (elapsed < duration) {
+      const animProgress = elapsed / duration;
+      const diff = targetValue - startValue;
+      progress = startValue + diff * animProgress;
+      animation = requestAnimationFrame(animate);
+    } else {
+      progress = targetValue;
+      animation = null;
+      startTime = null;
+    }
+  }
+
+  function onClick(target) {
+    if (animation) cancelAnimationFrame(animation);
+
+    startTime = null;
+    startValue = progress;
+    targetValue = target;
+    animation = requestAnimationFrame(animate);
+  }
+
+  const buttons = document.querySelectorAll(".hero-switcher .item");
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function (e) {
+      const value = parseInt(this.getAttribute("data-state"));
+      onClick(value);
+    });
+  }
 }
 function parallaxIt(e, target, movement) {
   const rect = target.getBoundingClientRect();
