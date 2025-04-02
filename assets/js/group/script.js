@@ -6,7 +6,7 @@ function initLenis() {
   lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smooth: true
+    smooth: true,
   });
 
   function raf(time) {
@@ -38,8 +38,8 @@ function hero() {
       scrub: 1,
       pin: true,
       pinSpacing: false,
-      markers: true
-    }
+      markers: true,
+    },
   });
 
   // Animation cho video wrapper
@@ -61,8 +61,8 @@ function hero() {
       onUpdate: (self) => {
         let progress = self.progress.toFixed(2);
         gsap.to(heroVideo, { opacity: progress == 1 ? 0 : 1, duration: 0.3 });
-      }
-    }
+      },
+    },
   });
 
   gsap.fromTo(
@@ -75,8 +75,8 @@ function hero() {
         trigger: heroVideo, // Cùng trigger với heroVideo
         start: "top top",
         end: "+=150%",
-        scrub: true
-      }
+        scrub: true,
+      },
     }
   );
 
@@ -87,8 +87,8 @@ function hero() {
       trigger: heroVideo, // Cùng trigger với heroVideo
       start: "top top",
       end: "+=150%",
-      scrub: true
-    }
+      scrub: true,
+    },
   });
 
   // loading
@@ -112,7 +112,7 @@ function hero() {
         gsap.to(".hero-switcher .item-ovl", {
           opacity: 0,
           duration: 0.5,
-          ease: "none"
+          ease: "none",
         });
       }
 
@@ -127,7 +127,7 @@ function hero() {
         document.querySelector(".hero-switcher").classList.remove("loading");
         document.querySelector(".hero").classList.remove("loading");
       }
-    }
+    },
   });
 
   // loading
@@ -160,7 +160,7 @@ function hero() {
           document.querySelector(".hero-switcher .list-item").style.opacity = 1;
         }, 0.3);
       }
-    }
+    },
   });
 
   // Animation cho header
@@ -204,8 +204,8 @@ function hero() {
           document
             .querySelector(".hero-gradient")
             .classList.toggle("active", progress == 1);
-        }
-      }
+        },
+      },
     }
   );
 
@@ -220,8 +220,8 @@ function hero() {
           document.querySelector("#header").classList.remove("loading");
           document.querySelector(".hero-switcher").classList.remove("loading");
         }
-      }
-    }
+      },
+    },
   });
 
   tl.to(".item-ovl", {
@@ -231,13 +231,13 @@ function hero() {
     delay: 1,
     top: "20px",
     yPercent: 0,
-    ease: "none"
+    ease: "none",
   }).to(
     ".item-ovl",
     {
       opacity: 0,
       duration: 0.3,
-      ease: "none"
+      ease: "none",
     },
     "-=0.24"
   );
@@ -271,8 +271,8 @@ function hero() {
         } else {
           document.querySelector(".hero").classList.remove("done-video");
         }
-      }
-    }
+      },
+    },
   });
 
   ScrollTrigger.refresh();
@@ -292,7 +292,7 @@ function parallaxIt(e, target, movement) {
     duration: 0.3,
     x: parallaxX,
     y: parallaxY,
-    ease: "power2.out"
+    ease: "power2.out",
   });
 }
 
@@ -333,7 +333,7 @@ function hoverIcon() {
         width: 100,
         x: 0,
         y: 0,
-        ease: "power2.out"
+        ease: "power2.out",
       });
       const img = item.querySelector("img");
       if (img) {
@@ -342,7 +342,7 @@ function hoverIcon() {
           x: 0,
           y: 0,
           scale: 1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -353,7 +353,7 @@ function hoverIcon() {
         gsap.to(img, {
           duration: 0.3,
           scale: 0.9,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -370,7 +370,7 @@ function hoverIcon() {
         duration: 0.3,
         x: 0,
         y: 0,
-        ease: "power2.out"
+        ease: "power2.out",
       });
       const span = button.querySelector("span");
       if (span) {
@@ -379,7 +379,7 @@ function hoverIcon() {
           x: 0,
           y: 0,
           scale: 1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -390,7 +390,7 @@ function hoverIcon() {
         gsap.to(span, {
           duration: 0.3,
           scale: 0.9,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -399,39 +399,79 @@ function hoverIcon() {
 function testimonial() {
   const wrapper = document.querySelector(".testimonial__scroll-wrapper");
   const container = document.querySelector(".testimonial__container");
+  const customCursor = document.querySelector(".custom-cursor");
+  const cursorText = customCursor.querySelector("span");
   let scrollAmount = 0;
   let isHovering = false;
+
   function handleScroll(e) {
-    if (!isHovering) return; // Chỉ chạy khi chuột trong section
+    if (!isHovering) return;
 
     const containerWidth = container.offsetWidth;
     const wrapperWidth = wrapper.scrollWidth;
     const maxScroll = wrapperWidth - containerWidth;
 
-    // Tính vị trí chuột tương đối trong container
     const rect = container.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left; // Vị trí X trong container
-    const scrollRatio = mouseX / containerWidth;
+    const mouseX = e.clientX - rect.left;
 
-    // Tính toán vị trí scroll mới
-    scrollAmount = scrollRatio * maxScroll * -1;
+    const triggerZone = 200;
+    if (mouseX >= containerWidth - triggerZone) {
+      scrollAmount = -maxScroll;
+    } else {
+      const adjustedWidth = containerWidth - triggerZone;
+      const adjustedRatio = mouseX / adjustedWidth;
+      scrollAmount = Math.min(0, adjustedRatio * maxScroll * -1);
+    }
+
+    scrollAmount = Math.max(-maxScroll, Math.min(0, scrollAmount));
     wrapper.style.transform = `translateX(${scrollAmount}px)`;
   }
 
-  // Bật/tắt hiệu ứng khi chuột vào/ra section
+  // Di chuyển customCursor và áp dụng parallax cho span
+  function moveCursor(e) {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    // customCursor di chuyển chính xác theo chuột
+    customCursor.style.transform = `translate(${mouseX - 0}px, ${
+      mouseY - 10
+    }px)`; // Căn giữa
+
+    // Tính parallax cho span dựa trên vị trí chuột trong container
+    const containerWidth = container.offsetWidth; // Lấy containerWidth trong hàm này
+    const containerHeight = container.offsetHeight; // Thêm containerHeight
+    const rect = container.getBoundingClientRect();
+    const relativeX = mouseX - rect.left; // Vị trí X trong container
+    const relativeY = mouseY - rect.top; // Vị trí Y trong container
+    const centerX = containerWidth / 2;
+    const centerY = containerHeight / 2;
+
+    // Tính độ lệch parallax (hệ số 0.1 để nhẹ nhàng)
+    const parallaxX = (relativeX - centerX) * 0.05;
+    const parallaxY = (relativeY - centerY) * 0.05;
+
+    // Áp dụng transform cho span
+    cursorText.style.transform = `translate(${parallaxX}px, ${parallaxY}px)`;
+  }
+
+  // Sự kiện chuột
   container.addEventListener("mouseenter", () => {
     isHovering = true;
+    customCursor.style.opacity = "1";
   });
 
   container.addEventListener("mouseleave", () => {
     isHovering = false;
-    // Tùy chọn: Reset vị trí khi rời khỏi
     wrapper.style.transform = `translateX(0px)`;
+    customCursor.style.opacity = "0";
   });
 
-  // Theo dõi chuyển động chuột
-  container.addEventListener("mousemove", handleScroll);
+  container.addEventListener("mousemove", (e) => {
+    handleScroll(e);
+    moveCursor(e);
+  });
 }
+
 function animationText() {
   const fxTitle = document.querySelectorAll("[data-splitting]");
   const button = document.querySelector(".btn-large");
@@ -440,10 +480,12 @@ function animationText() {
       title.querySelectorAll(".char"),
       {
         "will-change": "opacity",
-        opacity: 0
+        opacity: 0,
+        transform: "translateX(0.5ex)",
       },
       {
         ease: "none",
+        transform: "translateX(0)",
         opacity: 1,
         stagger: 0.05,
         scrollTrigger: {
@@ -451,8 +493,8 @@ function animationText() {
           start: "top 70%",
           end: "top 70%",
           // scrub: true,
-          markers: true
-        }
+          markers: true,
+        },
       }
     );
   });
