@@ -35,7 +35,7 @@ function hero() {
     scrollTrigger: {
       trigger: ".hero",
       start: "top top",
-      end: "+=200%",
+      end: "+=250%",
       scrub: 1,
       pin: true,
       pinSpacing: false,
@@ -151,7 +151,6 @@ function hero() {
     onUpdate: function () {
       // Tính toán tiến trình từ thời gian
       const progress = this.progress();
-      console.log(progress);
 
       if (progress >= 0.01) {
         document.querySelector(".hero-switcher .list-item").style.opacity = 0;
@@ -212,10 +211,10 @@ function hero() {
           header.classList.toggle("header--fixed", progress >= 0.9);
           document
             .querySelector(".hero-switcher")
-            .classList.toggle("active", progress == 1);
+            .classList.toggle("active", self.progress == 1);
           document
             .querySelector(".hero-gradient")
-            .classList.toggle("active", progress == 1);
+            .classList.toggle("active", self.progress == 1);
         }
       }
     }
