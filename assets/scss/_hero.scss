@@ -5,7 +5,7 @@ main {
 section.hero {
   position: relative;
   height: 300vh;
-
+  overflow: hidden;
   .hero {
     transition: opacity 0.4s ease;
     opacity: 1;
@@ -17,7 +17,7 @@ section.hero {
     &-wrapper {
       position: relative;
       //   overflow: hidden;
-      height: 100dvh;
+      height: 100vh;
       padding: 20px 20px 120px;
 
       &__bg {

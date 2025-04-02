@@ -56,9 +56,10 @@ function hero() {
     scrollTrigger: {
       trigger: heroVideo,
       start: "top top",
-      end: "+=150%",
+      end: "+=300%",
       scrub: true,
       pinSpacing: false,
+      markers: true,
       onUpdate: (self) => {
         let progress = self.progress.toFixed(2);
         gsap.to(heroVideo, { opacity: progress == 1 ? 0 : 1, duration: 0.3 });
@@ -80,8 +81,9 @@ function hero() {
       scrollTrigger: {
         trigger: heroVideo, // Cùng trigger với heroVideo
         start: "top top",
-        end: "+=150%",
+        end: "+=100%",
         scrub: true,
+        markers: true,
       },
     }
   );
@@ -149,6 +151,8 @@ function hero() {
     onUpdate: function () {
       // Tính toán tiến trình từ thời gian
       const progress = this.progress();
+      console.log(progress);
+
       if (progress >= 0.01) {
         document.querySelector(".hero-switcher .list-item").style.opacity = 0;
       }
@@ -499,7 +503,7 @@ function animationText() {
           start: "top 70%",
           end: "top 70%",
           // scrub: true,
-          markers: true,
+          // markers: true,
         },
       }
     );
