@@ -2,6 +2,7 @@
   position: relative;
   height: 100vh;
   padding-top: 90px;
+  overflow: hidden;
   &__heading {
     display: flex;
     justify-content: center;
@@ -25,6 +26,9 @@
     width: max-content;
     transition: transform 1s ease-out;
     padding-right: 60px;
+    &:hover {
+      cursor: pointer;
+    }
   }
   &__item {
     width: 300px;
@@ -34,4 +38,27 @@
     border-radius: 24px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
+}
+.custom-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.9); /* Nền trắng mờ giống Luma */
+  border-radius: 30px;
+  padding: 12px;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.2s ease, transform 0.1s ease; /* Thêm transition cho mượt */
+  will-change: transform;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 135px;
+  height: 52px;
+}
+.custom-cursor span {
+  display: inline-block;
+  will-change: transform; /* Tối ưu hiệu suất cho span */
 }
