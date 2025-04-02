@@ -453,7 +453,7 @@ function testimonial() {
     const centerY = containerHeight / 2;
 
     // Tính độ lệch parallax (hệ số 0.1 để nhẹ nhàng)
-    const parallaxX = (relativeX - centerX) * 0.05;
+    const parallaxX = (relativeX - centerX) * 0.025;
     const parallaxY = (relativeY - centerY) * 0.05;
 
     // Áp dụng transform cho span

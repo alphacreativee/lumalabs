@@ -40,20 +40,22 @@
   }
 }
 .custom-cursor {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   pointer-events: none;
   z-index: 9999;
   background: rgba(255, 255, 255, 0.9); /* Nền trắng mờ giống Luma */
-  border-radius: 20px; /* Bo tròn giống Luma */
+  border-radius: 30px;
+  padding: 12px;
   opacity: 0;
+  transform: scale(0);
   transition: opacity 0.2s ease, transform 0.1s ease; /* Thêm transition cho mượt */
   will-change: transform;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 155px;
+  width: 135px;
   height: 52px;
 }
 .custom-cursor span {
