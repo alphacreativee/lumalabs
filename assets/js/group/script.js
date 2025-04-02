@@ -27,6 +27,7 @@ function hero() {
   const hero = document.querySelector(".hero");
   const personas = document.querySelector(".hero-personas");
   const heroVideo = document.querySelector(".hero-wrapper__video");
+  const heroContent = document.querySelector(".hero-wrapper__content");
   const header = document.getElementById("header");
   const heroHeight = hero.offsetHeight;
 
@@ -61,6 +62,11 @@ function hero() {
       onUpdate: (self) => {
         let progress = self.progress.toFixed(2);
         gsap.to(heroVideo, { opacity: progress == 1 ? 0 : 1, duration: 0.3 });
+
+        gsap.to(heroContent, {
+          opacity: progress > 0.05 ? 0 : 1,
+          duration: 0.3
+        });
       }
     }
   });
