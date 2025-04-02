@@ -302,7 +302,7 @@ function hero() {
       if (this.listeners[event]) {
         this.listeners[event].forEach((fn) => fn());
       }
-    }
+    },
   };
 
   let loadedImages = [];
@@ -328,7 +328,7 @@ function hero() {
       Array.from(
         { length: 24 },
         (_, i) => `./assets/morphing/5-1/5-1${String(i).padStart(2, "0")}.png`
-      )
+      ),
     ];
 
     const images = imageGroups.flat();
