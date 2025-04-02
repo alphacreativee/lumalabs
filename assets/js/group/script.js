@@ -35,7 +35,7 @@ function hero() {
     scrollTrigger: {
       trigger: ".hero",
       start: "top top",
-      end: "+=300%",
+      end: "+=200%",
       scrub: 1,
       pin: true,
       pinSpacing: false,
@@ -56,7 +56,7 @@ function hero() {
     scrollTrigger: {
       trigger: heroVideo,
       start: "top top",
-      end: "+=300%",
+      end: "+=100%",
       scrub: true,
       pinSpacing: false,
       markers: true,
@@ -94,7 +94,7 @@ function hero() {
     scrollTrigger: {
       trigger: heroVideo, // Cùng trigger với heroVideo
       start: "top top",
-      end: "+=150%",
+      end: "+=100%",
       scrub: true,
     },
   });
@@ -184,12 +184,14 @@ function hero() {
       top: 0,
       yPercent: 0,
       ease: "none",
+      duration: 4,
       scrollTrigger: {
-        trigger: "body",
+        trigger: "#header",
         start: "top top",
-        end: "50% top",
+        end: "bottom top",
         scrub: true,
         pinSpacing: false,
+        scroller: "body",
         onUpdate: (self) => {
           let progress = self.progress.toFixed(2);
           let header = document.getElementById("header");
@@ -269,7 +271,7 @@ function hero() {
     scrollTrigger: {
       trigger: heroVideo,
       start: "top top",
-      end: "+=150%",
+      end: "+=100%",
       scrub: true,
       pinSpacing: false,
       // markers: true
