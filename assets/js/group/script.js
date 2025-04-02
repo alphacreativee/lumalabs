@@ -446,7 +446,7 @@ function testimonial() {
     const mouseX = e.clientX;
     const mouseY = e.clientY;
 
-    // Đặt customCursor vào chính giữa con trỏ chuột
+    // Căn giữa customCursor vào chuột
     customCursor.style.transform = `translate(${mouseX - cursorWidth / 2}px, ${
       mouseY - cursorHeight / 2
     }px)`;
