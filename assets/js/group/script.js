@@ -435,28 +435,28 @@ function testimonial() {
 
   // Di chuyển customCursor và áp dụng parallax cho span
   function moveCursor(e) {
+    const cursorWidth = customCursor.offsetWidth;
+    const cursorHeight = customCursor.offsetHeight;
     const mouseX = e.clientX;
     const mouseY = e.clientY;
 
-    // customCursor di chuyển chính xác theo chuột
-    customCursor.style.transform = `translate(${mouseX - 0}px, ${
-      mouseY - 10
-    }px)`; // Căn giữa
+    // Đặt customCursor vào chính giữa con trỏ chuột
+    customCursor.style.transform = `translate(${mouseX - cursorWidth / 2}px, ${
+      mouseY - cursorHeight / 2
+    }px)`;
 
-    // Tính parallax cho span dựa trên vị trí chuột trong container
-    const containerWidth = container.offsetWidth; // Lấy containerWidth trong hàm này
-    const containerHeight = container.offsetHeight; // Thêm containerHeight
-    const rect = container.getBoundingClientRect();
-    const relativeX = mouseX - rect.left; // Vị trí X trong container
-    const relativeY = mouseY - rect.top; // Vị trí Y trong container
-    const centerX = containerWidth / 2;
-    const centerY = containerHeight / 2;
+    // Tính parallax cho span
+    const containerRect = container.getBoundingClientRect();
+    const relativeX = mouseX - containerRect.left;
+    const relativeY = mouseY - containerRect.top;
+    const centerX = container.offsetWidth / 2;
+    const centerY = container.offsetHeight / 2;
 
-    // Tính độ lệch parallax (hệ số 0.1 để nhẹ nhàng)
+    // Hiệu ứng parallax nhẹ nhàng
     const parallaxX = (relativeX - centerX) * 0.025;
     const parallaxY = (relativeY - centerY) * 0.05;
 
-    // Áp dụng transform cho span
+    // Áp dụng transform cho span (hiệu ứng parallax)
     cursorText.style.transform = `translate(${parallaxX}px, ${parallaxY}px)`;
   }
 
