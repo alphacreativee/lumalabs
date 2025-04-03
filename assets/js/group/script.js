@@ -453,6 +453,78 @@ function hero() {
     });
   }
 }
+
+// slider drag
+gsap.registerPlugin(Draggable);
+
+gsap.defaults({ ease: "none" });
+
+var picker = document.querySelector(".picker");
+var cells = document.querySelectorAll(".cell");
+var proxy = document.createElement("div");
+
+var cellWidth = window.innerWidth / 2.3;
+var numCells = cells.length;
+var cellStep = 1 / numCells;
+var wrapWidth = cellWidth * numCells;
+
+var baseTl = gsap.timeline({ paused: true });
+var wrapProgress = gsap.utils.wrap(0, 1);
+
+gsap.set(picker, {
+  width: wrapWidth - cellWidth
+});
+
+for (var i = 0; i < cells.length; i++) {
+  initCell(cells[i], i);
+}
+
+var animation = gsap
+  .timeline({ repeat: -1, paused: true })
+  .add(baseTl.tweenFromTo(1, 2, { immediateRender: true }));
+
+var draggable = new Draggable(proxy, {
+  type: "x",
+  trigger: picker,
+  onDrag: updateProgress,
+  onThrowUpdate: updateProgress,
+  snap: {
+    x: snapX
+  },
+  onRelease: function () {
+    console.log("onRelease");
+  }
+});
+
+function snapX(x) {
+  return Math.round(x / cellWidth) * cellWidth;
+}
+
+function updateProgress() {
+  animation.progress(wrapProgress(this.x / wrapWidth));
+}
+
+function initCell(element, index) {
+  gsap.set(element, {
+    width: cellWidth,
+    scale: 0.6,
+    x: -cellWidth,
+    y: 150
+  });
+
+  var tl = gsap
+    .timeline({ repeat: 1 })
+    .to(element, 1, { x: "+=" + wrapWidth }, 0)
+    .to(
+      element,
+      cellStep,
+      { color: "#009688", scale: 1, repeat: 1, y: 0, yoyo: true },
+      0.5 - cellStep
+    );
+  baseTl.add(tl, i * -cellStep);
+}
+// end slider drag
+
 function parallaxIt(e, target, movement) {
   const rect = target.getBoundingClientRect();
 
