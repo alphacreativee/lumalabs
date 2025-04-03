@@ -6,7 +6,7 @@ function initLenis() {
   lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smooth: true
+    smooth: true,
   });
 
   function raf(time) {
@@ -38,9 +38,9 @@ function hero() {
       end: "+=200%",
       scrub: 1,
       pin: true,
-      pinSpacing: false
+      pinSpacing: false,
       // markers: true
-    }
+    },
   });
 
   // Animation cho video wrapper
@@ -66,10 +66,10 @@ function hero() {
 
         gsap.to(heroContent, {
           opacity: progress > 0.05 ? 0 : 1,
-          duration: 0.3
+          duration: 0.3,
         });
-      }
-    }
+      },
+    },
   });
 
   gsap.fromTo(
@@ -82,8 +82,9 @@ function hero() {
         trigger: heroVideo, // Cùng trigger với heroVideo
         start: "top top",
         end: "+=100%",
-        scrub: true
-      }
+        scrub: true,
+        // markers: true,
+      },
     }
   );
 
@@ -94,8 +95,8 @@ function hero() {
       trigger: heroVideo, // Cùng trigger với heroVideo
       start: "top top",
       end: "+=100%",
-      scrub: true
-    }
+      scrub: true,
+    },
   });
 
   // loading
@@ -119,7 +120,7 @@ function hero() {
         gsap.to(".hero-switcher .item-ovl", {
           opacity: 0,
           duration: 0.5,
-          ease: "none"
+          ease: "none",
         });
       }
 
@@ -141,7 +142,7 @@ function hero() {
         document.querySelector(".hero-switcher").classList.remove("loading");
         document.querySelector(".hero").classList.remove("loading");
       }
-    }
+    },
   });
 
   // loading
@@ -175,7 +176,7 @@ function hero() {
           document.querySelector(".hero-switcher .list-item").style.opacity = 1;
         }, 0.3);
       }
-    }
+    },
   });
 
   // Animation cho header
@@ -221,8 +222,8 @@ function hero() {
           document
             .querySelector(".hero-gradient")
             .classList.toggle("active", self.progress == 1);
-        }
-      }
+        },
+      },
     }
   );
 
@@ -237,8 +238,8 @@ function hero() {
           document.querySelector("#header").classList.remove("loading");
           document.querySelector(".hero-switcher").classList.remove("loading");
         }
-      }
-    }
+      },
+    },
   });
 
   tl.to(".item-ovl", {
@@ -248,13 +249,13 @@ function hero() {
     delay: 1,
     top: "20px",
     yPercent: 0,
-    ease: "none"
+    ease: "none",
   }).to(
     ".item-ovl",
     {
       opacity: 0,
       duration: 0.3,
-      ease: "none"
+      ease: "none",
     },
     "-=0.24"
   );
@@ -306,8 +307,8 @@ function hero() {
         } else {
           document.querySelector(".hero").classList.remove("done-video");
         }
-      }
-    }
+      },
+    },
   });
   ScrollTrigger.refresh();
 
@@ -325,7 +326,7 @@ function hero() {
       if (this.listeners[event]) {
         this.listeners[event].forEach((fn) => fn());
       }
-    }
+    },
   };
 
   let loadedImages = [];
@@ -351,7 +352,7 @@ function hero() {
       Array.from(
         { length: 24 },
         (_, i) => `./assets/morphing/5-1/5-1${String(i).padStart(2, "0")}.png`
-      )
+      ),
     ];
 
     const images = imageGroups.flat();
@@ -540,7 +541,7 @@ function parallaxIt(e, target, movement) {
     duration: 0.3,
     x: parallaxX,
     y: parallaxY,
-    ease: "power2.out"
+    ease: "power2.out",
   });
 }
 
@@ -581,7 +582,7 @@ function hoverIcon() {
         width: 100,
         x: 0,
         y: 0,
-        ease: "power2.out"
+        ease: "power2.out",
       });
       const img = item.querySelector("img");
       if (img) {
@@ -590,7 +591,7 @@ function hoverIcon() {
           x: 0,
           y: 0,
           scale: 1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -601,7 +602,7 @@ function hoverIcon() {
         gsap.to(img, {
           duration: 0.3,
           scale: 0.9,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -618,7 +619,7 @@ function hoverIcon() {
         duration: 0.3,
         x: 0,
         y: 0,
-        ease: "power2.out"
+        ease: "power2.out",
       });
       const span = button.querySelector("span");
       if (span) {
@@ -627,7 +628,7 @@ function hoverIcon() {
           x: 0,
           y: 0,
           scale: 1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -638,7 +639,7 @@ function hoverIcon() {
         gsap.to(span, {
           duration: 0.3,
           scale: 0.9,
-          ease: "power2.out"
+          ease: "power2.out",
         });
       }
     });
@@ -727,7 +728,7 @@ function animationText() {
       {
         "will-change": "opacity",
         opacity: 0,
-        transform: "translateX(0.5ex)"
+        transform: "translateX(0.5ex)",
       },
       {
         ease: "none",
@@ -737,10 +738,10 @@ function animationText() {
         scrollTrigger: {
           trigger: title,
           start: "top 70%",
-          end: "top 70%"
+          end: "top 70%",
           // scrub: true,
           // markers: true,
-        }
+        },
       }
     );
   });
@@ -768,12 +769,72 @@ function animationText() {
   // };
   // button.addEventListener("click", toggleAnimation);
 }
+function introduce() {
+  gsap.registerPlugin(ScrollTrigger);
+  const slides = gsap.utils.toArray(".slide");
+  // const activeSlideImages = gsap.utils.toArray(".active-slide img");
+
+  function getInitialTranslateZ(slide) {
+    const style = window.getComputedStyle(slide);
+    const matrix = style.transform.match(/matrix3d\((.+)\)/);
+
+    if (matrix) {
+      const value = matrix[1].split(", ");
+
+      return parseFloat(value[14] || 0);
+    }
+    return 0;
+  }
+
+  function mapRange(value, inMin, inMax, outMin, outMax) {
+    return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+  }
+
+  slides.forEach((slide, index) => {
+    const initialZ = getInitialTranslateZ(slide);
+
+    ScrollTrigger.create({
+      trigger: ".slider",
+      start: "top top",
+      end: "bottom 90%",
+      scrub: 2,
+      markers: true,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        const zIncrement = progress * 12500;
+        const currentZ = initialZ + zIncrement;
+        let opacity;
+        console.log(initialZ);
+        if (currentZ > -2500) {
+          opacity = mapRange(currentZ, -2500, 0, 0.5, 1);
+        } else {
+          opacity = mapRange(currentZ, -5000, -2500, 0, 0.5);
+        }
+        slide.style.opacity = opacity;
+        slide.style.transform = `translate3d(-50%,-30%,${currentZ}px)`;
+
+        // if (currentZ < 100) {
+        //   gsap.to(activeSlideImages[index], 1.5, {
+        //     opacity: 1,
+        //     ease: "none",
+        //   });
+        // } else {
+        //   gsap.to(activeSlideImages[index], 1.5, {
+        //     opacity: 0,
+        //     ease: "none",
+        //   });
+        // }
+      },
+    });
+  });
+}
 const init = () => {
   initLenis();
   hero();
   hoverIcon();
   testimonial();
   animationText();
+  introduce();
   // Thêm listener để làm mới khi resize
   window.addEventListener("resize", () => {
     ScrollTrigger.refresh();
