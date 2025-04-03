@@ -38,8 +38,8 @@ function hero() {
       end: "+=200%",
       scrub: 1,
       pin: true,
-      pinSpacing: false,
-      markers: true
+      pinSpacing: false
+      // markers: true
     }
   });
 
@@ -56,12 +56,12 @@ function hero() {
     scrollTrigger: {
       trigger: heroVideo,
       start: "top top",
-      end: "+=100%",
+      end: "+=85%",
       scrub: true,
       pinSpacing: false,
-      markers: true,
+      // markers: true,
       onUpdate: (self) => {
-        let progress = self.progress.toFixed(2);
+        let progress = self.progress;
         gsap.to(heroVideo, { opacity: progress == 1 ? 0 : 1, duration: 0.3 });
 
         gsap.to(heroContent, {
@@ -83,7 +83,6 @@ function hero() {
         start: "top top",
         end: "+=100%",
         scrub: true
-        // markers: true,
       }
     }
   );
@@ -129,6 +128,13 @@ function hero() {
         document.querySelector("#header").classList.remove("loading");
 
         document.querySelector(".hero-switcher .list-item").style.opacity = 1;
+
+        const video = document.querySelector(".hero-wrapper__video video");
+        if (video) {
+          video
+            .play()
+            .catch((err) => console.error("Không thể phát video:", err));
+        }
       }
 
       if (progress == 1) {
