@@ -724,8 +724,8 @@ function introduce() {
     ScrollTrigger.create({
       trigger: ".slider",
       start: "top top",
-      end: "bottom 95%",
-      scrub: 1,
+      end: "bottom 90%",
+      scrub: 2,
       markers: true,
       onUpdate: (self) => {
         const progress = self.progress;
