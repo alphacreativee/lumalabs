@@ -739,7 +739,7 @@ function introduce() {
           opacity = mapRange(currentZ, -5000, -2500, 0, 0.5);
         }
         slide.style.opacity = opacity;
-        slide.style.transform = `translate3d(-50%,-50%,${currentZ}px)`;
+        slide.style.transform = `translate3d(-50%,-30%,${currentZ}px)`;
 
         // if (currentZ < 100) {
         //   gsap.to(activeSlideImages[index], 1.5, {
