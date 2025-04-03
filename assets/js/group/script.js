@@ -700,53 +700,60 @@ function animationText() {
 function introduce() {
   gsap.registerPlugin(ScrollTrigger);
   const slides = gsap.utils.toArray(".slide");
-  const slider = document.querySelector(".slider");
-
-  if (!slider) {
-    console.error("Không tìm thấy .slider");
-    return;
-  }
+  // const activeSlideImages = gsap.utils.toArray(".active-slide img");
 
   function getInitialTranslateZ(slide) {
     const style = window.getComputedStyle(slide);
     const matrix = style.transform.match(/matrix3d\((.+)\)/);
-    return matrix ? parseFloat(matrix[1].split(", ")[14] || 0) : 0;
+
+    if (matrix) {
+      const value = matrix[1].split(", ");
+
+      return parseFloat(value[14] || 0);
+    }
+    return 0;
   }
 
   function mapRange(value, inMin, inMax, outMin, outMax) {
     return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
   }
 
-  // Pin .slider và thực hiện animation cho tất cả slides
-  ScrollTrigger.create({
-    trigger: slider,
-    start: "top top", // Pin khi .slider chạm đỉnh viewport
-    end: "+=100%", // Pin trong khoảng gấp đôi chiều cao viewport
-    // pin: true, // Bật pin cho .slider
-    // pinSpacing: false, // Không thêm khoảng trống
-    scrub: 1,
-    markers: true, // Hiển thị markers
-    onUpdate: (self) => {
-      const progress = self.progress;
-      console.log(progress);
+  slides.forEach((slide, index) => {
+    const initialZ = getInitialTranslateZ(slide);
 
-      slides.forEach((slide) => {
-        const initialZ = getInitialTranslateZ(slide);
-        const zIncrement = (progress * 12500) / 10; // Di chuyển từ -12500 đến 0
+    ScrollTrigger.create({
+      trigger: ".slider",
+      start: "top top",
+      end: "bottom 95%",
+      scrub: 1,
+      markers: true,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        const zIncrement = progress * 12500;
         const currentZ = initialZ + zIncrement;
         let opacity;
-        // console.log(currentZ);
-
+        console.log(initialZ);
         if (currentZ > -2500) {
           opacity = mapRange(currentZ, -2500, 0, 0.5, 1);
         } else {
           opacity = mapRange(currentZ, -5000, -2500, 0, 0.5);
         }
+        slide.style.opacity = opacity;
+        slide.style.transform = `translate3d(-50%,-50%,${currentZ}px)`;
 
-        slide.style.opacity = Math.max(0, Math.min(1, opacity));
-        slide.style.transform = `translate3d(-50%, -50%, ${currentZ}px)`;
-      });
-    },
+        // if (currentZ < 100) {
+        //   gsap.to(activeSlideImages[index], 1.5, {
+        //     opacity: 1,
+        //     ease: "none",
+        //   });
+        // } else {
+        //   gsap.to(activeSlideImages[index], 1.5, {
+        //     opacity: 0,
+        //     ease: "none",
+        //   });
+        // }
+      },
+    });
   });
 }
 const init = () => {
