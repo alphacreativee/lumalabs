@@ -4,7 +4,8 @@
   width: 100%;
   top: 0;
   left: 0;
-
+  background-color: transparent;
+  mix-blend-mode: difference;
   &.loading {
     z-index: 0;
   }
@@ -26,7 +27,7 @@
     &__logo {
       width: 148px;
       aspect-ratio: 148 / 59;
-
+      isolation: isolate;
       img {
         width: 100%;
         height: 100%;
