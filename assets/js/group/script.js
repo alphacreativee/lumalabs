@@ -473,7 +473,7 @@ var baseTl = gsap.timeline({ paused: true });
 var wrapProgress = gsap.utils.wrap(0, 1);
 
 gsap.set(picker, {
-  width: wrapWidth - cellWidth
+  width: wrapWidth - cellWidth,
 });
 
 for (var i = 0; i < cells.length; i++) {
@@ -490,11 +490,11 @@ var draggable = new Draggable(proxy, {
   onDrag: updateProgress,
   onThrowUpdate: updateProgress,
   snap: {
-    x: snapX
+    x: snapX,
   },
   onRelease: function () {
     console.log("onRelease");
-  }
+  },
 });
 
 function snapX(x) {
@@ -510,7 +510,7 @@ function initCell(element, index) {
     width: cellWidth,
     scale: 0.6,
     x: -cellWidth,
-    y: 150
+    y: 150,
   });
 
   var tl = gsap
@@ -796,9 +796,10 @@ function introduce() {
     ScrollTrigger.create({
       trigger: ".slider",
       start: "top top",
-      end: "bottom 90%",
-      scrub: 2,
+      end: "bottom 85%",
+      scrub: 5,
       markers: true,
+      pinSpacing: true,
       onUpdate: (self) => {
         const progress = self.progress;
         const zIncrement = progress * 12500;
@@ -811,19 +812,7 @@ function introduce() {
           opacity = mapRange(currentZ, -5000, -2500, 0, 0.5);
         }
         slide.style.opacity = opacity;
-        slide.style.transform = `translate3d(-50%,-30%,${currentZ}px)`;
-
-        // if (currentZ < 100) {
-        //   gsap.to(activeSlideImages[index], 1.5, {
-        //     opacity: 1,
-        //     ease: "none",
-        //   });
-        // } else {
-        //   gsap.to(activeSlideImages[index], 1.5, {
-        //     opacity: 0,
-        //     ease: "none",
-        //   });
-        // }
+        slide.style.transform = `translate3d(-50%,-50%,${currentZ}px)`;
       },
     });
   });
