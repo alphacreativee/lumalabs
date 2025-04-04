@@ -38,6 +38,10 @@ section.hero {
           height: 100%;
           z-index: 10;
           opacity: 0;
+
+          &.active {
+            opacity: 1;
+          }
         }
 
         &.active {
@@ -158,8 +162,18 @@ section.hero {
         visibility: visible;
 
         .list-item {
+          .item {
+            background: linear-gradient(
+              180deg,
+              rgba(255, 255, 255, 0.15) 0%,
+              rgba(153, 153, 153, 0) 100%
+            );
+            backdrop-filter: blur(10px);
+            border: 2px solid hsla(0, 0%, 100%, 0.15);
+          }
           .item.active {
-            background-color: var(--main-color);
+            background: var(--main-color);
+            border-color: var(--main-color);
             width: 400px !important;
             transition: transform 0.4s ease;
             transition: width 0.5s ease;
